@@ -1,0 +1,28 @@
+version: "3.8"
+# NOTE: the container now runs as a non-root user (see Dockerfile). Before
+# `docker-compose up`, create the host-side bind-mount directories yourself
+# so they're writable by the container:
+#   mkdir -p logs data && chmod 777 logs data
+# (or run `docker-compose up` once as root to let Docker create them, then
+# fix ownership — this wasn't verified end-to-end in this environment, since
+# it has no Docker daemon available; treat this as reviewed-but-untested.)
+services:
+  gold-bot:
+    build: .
+    container_name: gold-trading-bot
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
