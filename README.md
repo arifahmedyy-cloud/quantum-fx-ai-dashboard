@@ -38,7 +38,6 @@ gold_bot/
 ├── tests/                      # Comprehensive pytest suite
 ├── Dockerfile                  # Production container
 ├── docker-compose.yml          # Multi-service orchestration
-├── .github/workflows/ci.yml    # GitHub Actions CI/CD
 ├── requirements.txt
 ├── .env.example
 └── pytest.ini
@@ -140,14 +139,6 @@ docker-compose logs -f gold-bot
 # Stop
 docker-compose down
 ```
-
-## 🔄 CI/CD
-
-GitHub Actions pipeline:
-1. Lint with `flake8`
-2. Format check with `black`
-3. Run `pytest` with coverage
-4. Build and test Docker image
 
 ## 📈 Performance
 
